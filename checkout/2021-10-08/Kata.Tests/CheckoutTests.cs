@@ -14,16 +14,18 @@ namespace Kata.Tests
         {
             _subject = _mocker.CreateInstance<Checkout>();
         }
+
         [Fact]
         public void When()
         {
             // Given
+            _subject.Scan("A");
 
             // When
             var totalPrice = _subject.GetTotalPrice();
 
             // Then
-            totalPrice.Should().Be(0);
+            totalPrice.Should().Be(50);
         }
     }
 }
