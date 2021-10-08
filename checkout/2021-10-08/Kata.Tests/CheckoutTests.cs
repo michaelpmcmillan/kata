@@ -15,11 +15,12 @@ namespace Kata.Tests
             _subject = _mocker.CreateInstance<Checkout>();
         }
 
-        [Fact]
-        public void When()
+        [Theory]
+        [InlineData("A")]
+        public void When(string sku)
         {
             // Given
-            _subject.Scan("A");
+            _subject.Scan(sku);
 
             // When
             var totalPrice = _subject.GetTotalPrice();
