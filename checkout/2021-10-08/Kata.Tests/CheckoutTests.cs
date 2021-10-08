@@ -18,6 +18,8 @@ namespace Kata.Tests
         [Theory]
         [InlineData("A", 50)]
         [InlineData("B", 30)]
+        [InlineData("C", 20)]
+        [InlineData("D", 15)]
         [InlineData("Z", 0)]
         public void When(string sku, float expectedPrice)
         {
