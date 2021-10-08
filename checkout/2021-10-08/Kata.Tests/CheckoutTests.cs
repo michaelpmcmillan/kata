@@ -1,7 +1,7 @@
-using System;
 using Moq.AutoMock;
 using FluentAssertions;
 using Xunit;
+using System.Collections.Generic;
 
 namespace Kata.Tests
 {
@@ -21,10 +21,15 @@ namespace Kata.Tests
         [InlineData("C", 20)]
         [InlineData("D", 15)]
         [InlineData("Z", 0)]
-        public void When(string sku, float expectedPrice)
+        public void GivenSKUHasBeenScanned_WhenGetTotalPrice_ThenReturnExpectedPrice(string sku, float expectedPrice)
         {
             // Given
-            _subject.Scan(sku[0]);
+            _mocker.GetMock<ICheckoutItemStore>()
+                .Setup(itemStore => itemStore.GetScannedItems())
+                .Returns(new Dictionary<char, int>()
+                    {
+                        { sku[0], 1 }
+                    });
 
             // When
             var totalPrice = _subject.GetTotalPrice();

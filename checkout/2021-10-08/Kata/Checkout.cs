@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Kata
 {
     public class Checkout : ICheckout
     {
-        private readonly Dictionary<char, int> _scannedItems = new();
+        private readonly ICheckoutItemStore _checkoutItemStore;
+
+        public Checkout(ICheckoutItemStore checkoutItemStore)
+        {
+            _checkoutItemStore = checkoutItemStore;
+        }
 
         public void Scan(char sku)
         {
-            if (!_scannedItems.ContainsKey(sku))
-            {
-                _scannedItems.Add(sku, 1);
-            }
-            else
-            {
-                _scannedItems[sku]++;
-            }
+            _checkoutItemStore.Scan(sku);
         }
 
         public float GetTotalPrice()
         {
-            return _scannedItems
+            return _checkoutItemStore.GetScannedItems()
                 .Sum(sku => GetPriceForSku(sku.Key) * sku.Value);
         }
 
