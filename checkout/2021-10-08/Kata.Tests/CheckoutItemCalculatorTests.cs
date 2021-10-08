@@ -2,6 +2,7 @@ using Moq.AutoMock;
 using FluentAssertions;
 using Xunit;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kata.Tests
 {
@@ -20,14 +21,18 @@ namespace Kata.Tests
         [InlineData("B", 30)]
         [InlineData("C", 20)]
         [InlineData("D", 15)]
+        [InlineData("AA", 100)]
+        [InlineData("AABCD", 165)]
         [InlineData("Z", 0)]
         public void GivenSKUHasBeenScanned_WhenGetTotalPrice_ThenReturnExpectedPrice(string sku, float expectedPrice)
         {
             // Given
-            var scannedItems = new Dictionary<char, int>()
+            var scannedItems = new Dictionary<char, int>();
+
+            foreach (var groupedSKU in sku.ToList().GroupBy(c => c))
             {
-                { sku[0], 1 }
-            };
+                scannedItems.Add(groupedSKU.Key, groupedSKU.Count());
+            }
 
             // When
             var totalPrice = _subject.GetTotalPrice(scannedItems);
