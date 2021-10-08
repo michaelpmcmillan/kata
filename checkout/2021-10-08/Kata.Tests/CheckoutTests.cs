@@ -16,17 +16,19 @@ namespace Kata.Tests
         }
 
         [Theory]
-        [InlineData("A")]
-        public void When(string sku)
+        [InlineData("A", 50)]
+        [InlineData("B", 30)]
+        [InlineData("Z", 0)]
+        public void When(string sku, float expectedPrice)
         {
             // Given
-            _subject.Scan(sku);
+            _subject.Scan(sku[0]);
 
             // When
             var totalPrice = _subject.GetTotalPrice();
 
             // Then
-            totalPrice.Should().Be(50);
+            totalPrice.Should().Be(expectedPrice);
         }
     }
 }
