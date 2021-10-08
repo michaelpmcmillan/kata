@@ -5,10 +5,14 @@ namespace Kata
     public class Checkout : ICheckout
     {
         private readonly ICheckoutItemStore _checkoutItemStore;
+        private readonly ICheckoutItemCalculator _checkoutItemCalculator;
 
-        public Checkout(ICheckoutItemStore checkoutItemStore)
+        public Checkout(
+            ICheckoutItemStore checkoutItemStore,
+            ICheckoutItemCalculator checkoutItemCalculator)
         {
             _checkoutItemStore = checkoutItemStore;
+            _checkoutItemCalculator = checkoutItemCalculator;
         }
 
         public void Scan(char sku)
@@ -18,17 +22,8 @@ namespace Kata
 
         public float GetTotalPrice()
         {
-            return _checkoutItemStore.GetScannedItems()
-                .Sum(sku => GetPriceForSku(sku.Key) * sku.Value);
-        }
-
-        private int GetPriceForSku(char sku)
-        {
-            if(sku == 'A') return 50;
-            if(sku == 'B') return 30;
-            if(sku == 'C') return 20;
-            if(sku == 'D') return 15;
-            return 0;
+            var scannedItems = _checkoutItemStore.GetScannedItems();
+            return _checkoutItemCalculator.GetTotalPrice(scannedItems);
         }
     }
 }

@@ -2,12 +2,14 @@ using Moq.AutoMock;
 using FluentAssertions;
 using Xunit;
 using System.Collections.Generic;
+using AutoFixture;
 
 namespace Kata.Tests
 {
     public class CheckoutTests
     {
         private readonly AutoMocker _mocker = new();
+        private readonly Fixture _autoFixture = new();
         private readonly ICheckout _subject;
 
         public CheckoutTests()
@@ -15,27 +17,29 @@ namespace Kata.Tests
             _subject = _mocker.CreateInstance<Checkout>();
         }
 
-        [Theory]
-        [InlineData("A", 50)]
-        [InlineData("B", 30)]
-        [InlineData("C", 20)]
-        [InlineData("D", 15)]
-        [InlineData("Z", 0)]
-        public void GivenSKUHasBeenScanned_WhenGetTotalPrice_ThenReturnExpectedPrice(string sku, float expectedPrice)
+        [Fact]
+        public void GivenSKUHasBeenScanned_WhenGetTotalPrice_ThenReturnExpectedPrice()
         {
             // Given
+            var scannedItems = new Dictionary<char, int>()
+                {
+                    { _autoFixture.Create<char>(), _autoFixture.Create<int>() }
+                };
+            var calculatedItemPrice = _autoFixture.Create<int>();
+
             _mocker.GetMock<ICheckoutItemStore>()
                 .Setup(itemStore => itemStore.GetScannedItems())
-                .Returns(new Dictionary<char, int>()
-                    {
-                        { sku[0], 1 }
-                    });
+                .Returns(scannedItems);
+
+            _mocker.GetMock<ICheckoutItemCalculator>()
+                .Setup(itemCalculator => itemCalculator.GetTotalPrice(scannedItems))
+                .Returns(calculatedItemPrice);
 
             // When
             var totalPrice = _subject.GetTotalPrice();
 
             // Then
-            totalPrice.Should().Be(expectedPrice);
+            totalPrice.Should().Be(calculatedItemPrice);
         }
     }
 }
