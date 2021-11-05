@@ -1,19 +1,17 @@
 using FluentAssertions;
-using Moq.AutoMock;
 using Xunit;
 
 namespace Kata.Tests
 {
     public class CheckoutTests
     {
-        private readonly AutoMocker _mocker = new();
-
         [Fact]
         public void GivenNothingHasBeenScanned_WhenGetTotalPrice_ShouldReturnZero()
         {
-            var subject = _mocker.CreateInstance<Checkout>();
+            var checkoutCalculator = new CheckoutCalculator();
+            var checkout = new Checkout(checkoutCalculator);
 
-            var totalPrice = subject.GetTotalPrice();
+            var totalPrice = checkout.GetTotalPrice();
 
             totalPrice.Should().Be(0);
         }
@@ -32,13 +30,14 @@ namespace Kata.Tests
         [InlineData("A A A A B B B", 255)]
         public void GivenItemsAreScanned_WhenGetTotalPrice_ShouldReturnTotalItemPrice(string items, int itemPrice)
         {
-            var subject = _mocker.CreateInstance<Checkout>();
+            var checkoutCalculator = new CheckoutCalculator();
+            var checkout = new Checkout(checkoutCalculator);
             foreach(var item in items.Split(" "))
             {
-                subject.Scan(item);
+                checkout.Scan(item);
             }
 
-            var totalPrice = subject.GetTotalPrice();
+            var totalPrice = checkout.GetTotalPrice();
 
             totalPrice.Should().Be(itemPrice);
         }
