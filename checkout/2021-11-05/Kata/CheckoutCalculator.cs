@@ -11,33 +11,18 @@ namespace Kata
             {
                 totalPrice += item.Key switch
                 {
-                    "A" => CalculateItemAPrice(item.Value),
-                    "B" => CalculateItemBPrice(item.Value),
-                    "C" => 20 * item.Value,
-                    "D" => 15 * item.Value,
+                    "A" => CalculateItemPrice(50, 130, 3, item.Value),
+                    "B" => CalculateItemPrice(30, 45, 2, item.Value),
+                    "C" => CalculateItemPrice(20, 20, 1, item.Value),
+                    "D" => CalculateItemPrice(15, 15, 1, item.Value),
                     _ => 0
                 };
             }
             return totalPrice;
         }
 
-        private int CalculateItemAPrice(int itemCount)
+        private int CalculateItemPrice(int individualItemPrice, int multibuyItemPrice, int multibuyCount, int itemCount)
         {
-            var individualItemPrice = 50;
-            var multibuyItemPrice = 130;
-            var multibuyCount = 3;
-            var completeSpecialOffers = itemCount / multibuyCount;
-            var remainingItemCount = itemCount - (completeSpecialOffers * multibuyCount);
-            var totalPrice = (multibuyItemPrice * completeSpecialOffers) + remainingItemCount * individualItemPrice;
-            return totalPrice;
-        }
-
-
-        private int CalculateItemBPrice(int itemCount)
-        {
-            var individualItemPrice = 30;
-            var multibuyItemPrice = 45;
-            var multibuyCount = 2;
             var completeSpecialOffers = itemCount / multibuyCount;
             var remainingItemCount = itemCount - (completeSpecialOffers * multibuyCount);
             var totalPrice = (multibuyItemPrice * completeSpecialOffers) + remainingItemCount * individualItemPrice;
