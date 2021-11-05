@@ -14,10 +14,10 @@ namespace Kata
             {
                 totalPrice += scannedItem.Key switch
                 {
-                    "A" => 50,
-                    "B" => 30,
-                    "C" => 20,
-                    "D" => 15,
+                    "A" => 50 * scannedItem.Value,
+                    "B" => 30 * scannedItem.Value,
+                    "C" => 20 * scannedItem.Value,
+                    "D" => 15 * scannedItem.Value,
                     _ => 0
                 };
             }
@@ -30,6 +30,7 @@ namespace Kata
             {
                 _scannedItems[item] = 0;
             }
+            _scannedItems[item]++;
         }
     }
 }
