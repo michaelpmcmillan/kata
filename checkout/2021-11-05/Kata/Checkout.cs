@@ -1,19 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Kata
 {
     public class Checkout : ICheckout
     {
-        private bool _itemHasBeenScanned = false;
+        private readonly Dictionary<string, int> _scannedItems = new();
 
         public int GetTotalPrice()
         {
-            return _itemHasBeenScanned ? 50 : 0;
+            int totalPrice = 0;
+            foreach(var scannedItem in _scannedItems)
+            {
+                totalPrice += scannedItem.Key switch
+                {
+                    "A" => 50,
+                    "B" => 30,
+                    _ => 0
+                };
+            }
+            return totalPrice;
         }
 
         public void Scan(string item)
         {
-            _itemHasBeenScanned = true;
+            if(!_scannedItems.ContainsKey(item))
+            {
+                _scannedItems[item] = 0;
+            }
         }
     }
 }
