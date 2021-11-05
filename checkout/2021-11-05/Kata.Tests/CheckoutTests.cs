@@ -1,4 +1,3 @@
-using System;
 using FluentAssertions;
 using Moq.AutoMock;
 using Xunit;
