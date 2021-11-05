@@ -1,5 +1,8 @@
-public interface ICheckout
+namespace Kata
 {
-    void Scan(string item);
-    int GetTotalPrice();
+    public interface ICheckout
+    {
+        void Scan(string item);
+        int GetTotalPrice();
+    }
 }
