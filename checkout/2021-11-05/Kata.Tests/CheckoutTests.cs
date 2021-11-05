@@ -24,10 +24,14 @@ namespace Kata.Tests
         [InlineData("B", 30)]
         [InlineData("C", 20)]
         [InlineData("D", 15)]
-        public void GivenItemIsScanned_WhenGetTotalPrice_ShouldReturnItemPrice(string item, int itemPrice)
+        [InlineData("A B C D", 115)]
+        public void GivenItemsAreScanned_WhenGetTotalPrice_ShouldReturnTotalItemPrice(string items, int itemPrice)
         {
             var subject = _mocker.CreateInstance<Checkout>();
-            subject.Scan(item);
+            foreach(var item in items.Split(" "))
+            {
+                subject.Scan(item);
+            }
 
             var totalPrice = subject.GetTotalPrice();
 
