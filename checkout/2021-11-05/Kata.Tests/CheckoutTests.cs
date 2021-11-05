@@ -18,5 +18,16 @@ namespace Kata.Tests
 
             totalPrice.Should().Be(0);
         }
+
+        [Fact]
+        public void GivenItemAIsScanned_WhenGetTotalPrice_ShouldReturn50()
+        {
+            var subject = _mocker.CreateInstance<Checkout>();
+            subject.Scan("A");
+
+            var totalPrice = subject.GetTotalPrice();
+
+            totalPrice.Should().Be(50);
+        }
     }
 }
