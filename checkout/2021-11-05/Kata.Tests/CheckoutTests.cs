@@ -27,6 +27,9 @@ namespace Kata.Tests
         [InlineData("A A B C C D D", 200)]
         [InlineData("A A A", 130)]
         [InlineData("A A A A", 180)]
+        [InlineData("B B", 45)]
+        [InlineData("B B B", 75)]
+        [InlineData("A A A A B B B", 255)]
         public void GivenItemsAreScanned_WhenGetTotalPrice_ShouldReturnTotalItemPrice(string items, int itemPrice)
         {
             var subject = _mocker.CreateInstance<Checkout>();
