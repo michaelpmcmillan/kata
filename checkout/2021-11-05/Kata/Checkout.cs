@@ -6,7 +6,7 @@ namespace Kata
     {
         public int GetTotalPrice()
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public void Scan(string item)
