@@ -1,5 +1,7 @@
 using Xunit;
 using FluentAssertions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kata.Tests;
 
@@ -16,7 +18,7 @@ public class GameTests
     }
 
     [Fact]
-    public void WhenMoveCardFromStockToDiscard_ThenCardShouldHaveMoved()
+    public void WhenMoveCardFromStockToDiscard_ThenCardShouldHaveMoved_AndBeFaceUp()
     {
         // Given
         var topStockCard = _subject.CardTable.Stock.Peek();
@@ -27,5 +29,27 @@ public class GameTests
         // Then
         _subject.CardTable.Stock.Peek().Should().NotBe(topStockCard);
         _subject.CardTable.Discard.Peek().Should().Be(topStockCard with { IsFaceUp = true });
+    }
+
+    [Fact]
+    public void GivenThereIs1CardInStock_WhenMoveCardFromStockToDiscard_ThenDiscardIsTurnedOverToBeNewStock()
+    {
+        // Given
+        var topCard = _subject.CardTable.Stock.Peek();
+        var originalStock = new Stack<Card>(
+            _subject.CardTable.Stock.ToList().Reverse<Card>());
+        while (_subject.CardTable.Stock.Count > 0)
+        {
+            _subject.MoveCardFromStockToDiscard();
+        }
+
+        // When
+        _subject.MoveCardFromStockToDiscard();
+
+        // Then
+        _subject.CardTable.Discard.Count.Should().Be(0);
+        _subject.CardTable.Stock.Count.Should().Be(52);
+        _subject.CardTable.Stock.Should().BeEquivalentTo(originalStock, options => options.WithStrictOrdering());
+        _subject.CardTable.Stock.Peek().Should().Be(topCard);
     }
 }

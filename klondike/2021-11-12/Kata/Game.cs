@@ -8,7 +8,15 @@ public class Game
         CardTable = cardTable;
     }
 
-    public void MoveCardFromStockToDiscard() =>
-        CardTable.Discard.Push(
-            CardTable.Stock.Pop() with { IsFaceUp = true });
+    public void MoveCardFromStockToDiscard()
+    {
+        if (CardTable.Stock.Count == 0)
+        {
+            CardTable.Discard.MoveAllCardsTo(CardTable.Stock, faceUp: false);
+        }
+        else
+        {
+            CardTable.Stock.MoveCardTo(CardTable.Discard, faceUp: true);
+        }
+    }
 }
