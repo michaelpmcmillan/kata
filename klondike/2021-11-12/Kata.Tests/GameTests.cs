@@ -52,4 +52,10 @@ public class GameTests
         _subject.CardTable.Stock.Should().BeEquivalentTo(originalStock, options => options.WithStrictOrdering());
         _subject.CardTable.Stock.Peek().Should().Be(topCard);
     }
+
+    // Move a card from the tableau or discard pile to one of the foundation piles.
+    // If the foundation pile is empty, only an Ace can be placed there, otherwise
+    //   only the next highest card in the appropriate suit can be placed
+    //   (so if a foundation pile is currently showing a four of hearts,
+    //     only the five of hearts may be placed there).
 }
