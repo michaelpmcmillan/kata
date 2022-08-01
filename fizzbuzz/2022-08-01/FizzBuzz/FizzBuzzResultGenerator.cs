@@ -2,8 +2,16 @@
 
 public class FizzBuzzResultGenerator
 {
-    public IEnumerable<string> Generate()
+    private readonly IFizzBuzzItemGenerator _itemGenerator;
+
+    public FizzBuzzResultGenerator(IFizzBuzzItemGenerator itemGenerator)
     {
-        return Enumerable.Range(1, 100).Select(number => number.ToString());
+        _itemGenerator = itemGenerator;
+    }
+
+    public IEnumerable<string> Generate(int start, int count)
+    {
+        return Enumerable.Range(start, count)
+            .Select(number => _itemGenerator.GetItem(number));
     }
 }
