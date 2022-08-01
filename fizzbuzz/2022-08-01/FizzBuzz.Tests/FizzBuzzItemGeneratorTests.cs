@@ -1,38 +1,71 @@
 ﻿using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FizzBuzz.Tests
 {
     public class FizzBuzzItemGeneratorTests
     {
+        public static IEnumerable<object[]> NumbersDivisibleBy3 = Enumerable.Range(1, 200)
+            .Where(number => number % 3 == 0)
+            .Where(number => number % 5 != 0)
+            .Select(number => new object[] { number });
+
+        public static IEnumerable<object[]> NumbersDivisibleBy5 = Enumerable.Range(1, 200)
+            .Where(number => number % 5 == 0)
+            .Where(number => number % 3 != 0)
+            .Select(number => new object[] { number });
+
+        public static IEnumerable<object[]> NumbersDivisibleBy3And5 = Enumerable.Range(1, 200)
+            .Where(number => number % 3 == 0)
+            .Where(number => number % 5 == 0)
+            .Select(number => new object[] { number });
+
+        public static IEnumerable<object[]> NumbersNotDivisibleBy3Or5 = Enumerable.Range(1, 200)
+            .Where(number => number % 3 != 0)
+            .Where(number => number % 5 != 0)
+            .Select(number => new object[] { number });
+
         [Theory]
-        [InlineData(1, "1")]
-        [InlineData(2, "2")]
-        [InlineData(3, "Fizz")]
-        [InlineData(4, "4")]
-        [InlineData(5, "Buzz")]
-        [InlineData(6, "Fizz")]
-        [InlineData(7, "7")]
-        [InlineData(8, "8")]
-        [InlineData(9, "Fizz")]
-        [InlineData(10, "Buzz")]
-        [InlineData(11, "11")]
-        [InlineData(12, "Fizz")]
-        [InlineData(13, "13")]
-        [InlineData(14, "14")]
-        [InlineData(15, "FizzBuzz")]
-        [InlineData(16, "16")]
-        public void GivenAllFizzNumbersBetween1and100_WhenGetItem_ReturnFizzForEachItem(int number, string expectation)
+        [MemberData(nameof(NumbersDivisibleBy3))]
+        public void GivenNumbersDivisibleBy3_WhenGetItem_ThenReturnFizz(int number)
         {
             var subject = new FizzBuzzItemGenerator();
 
             var item = subject.GetItem(number);
 
-            item.Should().Be(expectation);
+            item.Should().Be("Fizz");
+        }
+
+        [Theory]
+        [MemberData(nameof(NumbersDivisibleBy5))]
+        public void GivenNumbersDivisibleBy5_WhenGetItem_ThenReturnBuzz(int number)
+        {
+            var subject = new FizzBuzzItemGenerator();
+
+            var item = subject.GetItem(number);
+
+            item.Should().Be("Buzz");
+        }
+
+        [Theory]
+        [MemberData(nameof(NumbersDivisibleBy3And5))]
+        public void GivenNumbersDivisibleBy3And5_WhenGetItem_ThenReturnFizzBuzz(int number)
+        {
+            var subject = new FizzBuzzItemGenerator();
+
+            var item = subject.GetItem(number);
+
+            item.Should().Be("FizzBuzz");
+        }
+
+        [Theory]
+        [MemberData(nameof(NumbersNotDivisibleBy3Or5))]
+        public void GivenNumbersNotDivisibleBy3Or5_WhenGetItem_ThenReturnFizzBuzz(int number)
+        {
+            var subject = new FizzBuzzItemGenerator();
+
+            var item = subject.GetItem(number);
+
+            item.Should().Be(number.ToString());
         }
     }
 }
