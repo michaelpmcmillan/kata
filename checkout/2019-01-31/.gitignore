@@ -1,0 +1,5 @@
+*.vssscc
+*.vspscc
+.suo
+bin/
+obj/
